@@ -2,22 +2,18 @@ package com.terminalsnippets.actions
 
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.actionSystem.DefaultActionGroup
 import com.intellij.openapi.ui.popup.JBPopupFactory
-import com.intellij.util.ui.JBUI
 import java.awt.Component
 
 class OpenSnippetsPopupAction : AnAction() {
 
     override fun actionPerformed(e: AnActionEvent) {
-        val snippetGroup = SnippetActionGroup()
-        val children = snippetGroup.getChildren(e)
-
-        val group = DefaultActionGroup(*children)
+        // Pass SnippetActionGroup directly – never call getChildren() from client code
+        val group = SnippetActionGroup()
 
         val popup = JBPopupFactory.getInstance()
             .createActionGroupPopup(
-                "Terminal Snippets",
+                "Terminal Command Snippets",
                 group,
                 e.dataContext,
                 JBPopupFactory.ActionSelectionAid.SPEEDSEARCH,
