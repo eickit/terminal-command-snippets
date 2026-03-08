@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.terminalsnippets.plugin</id>
     <name>Terminal Command Snippets</name>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <vendor>EICK.IT GmbH</vendor>
 
     <description><![CDATA[

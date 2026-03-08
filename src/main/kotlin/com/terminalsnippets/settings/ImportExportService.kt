@@ -57,6 +57,7 @@ object ImportExportService {
     /**
      * Opens the native save dialog and exports all categories as JSON.
      */
+    @Suppress("DEPRECATION")
     fun exportToFile(parent: Component, categories: List<SnippetCategory>, project: Project? = null) {
         val descriptor = FileSaverDescriptor(
             "Export Snippets",
