@@ -5,16 +5,16 @@ import com.intellij.openapi.project.ProjectManager
 import javax.swing.JComponent
 
 /**
- * Registriert das Settings-Panel unter File → Settings → Tools → Terminal Snippets.
+ * Registers the settings panel under File → Settings → Tools → Terminal Command Snippets.
  */
 class TerminalSnippetsConfigurable : Configurable {
 
     private var panel: TerminalSnippetsSettingsPanel? = null
 
-    override fun getDisplayName(): String = "Terminal Snippets"
+    override fun getDisplayName(): String = "Terminal Command Snippets"
 
     override fun createComponent(): JComponent {
-        // Aktives Projekt holen (für native Datei-Dialoge)
+        // Get active project (for native file dialogs)
         val project = ProjectManager.getInstance().openProjects.firstOrNull()
         val p = TerminalSnippetsSettingsPanel(project)
         panel = p

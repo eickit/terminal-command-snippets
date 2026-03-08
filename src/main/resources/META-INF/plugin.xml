@@ -1,13 +1,13 @@
 <idea-plugin>
     <id>com.terminalsnippets.plugin</id>
-    <name>Terminal Snippets</name>
+    <name>Terminal Command Snippets</name>
     <version>1.0.0</version>
-    <vendor>Sven-Holger Eick</vendor>
+    <vendor>EICK.IT GmbH</vendor>
 
     <description><![CDATA[
-        <b>Terminal Snippets</b> – Categorized terminal commands at the click of a button.<br/><br/>
+        <b>Terminal Command Snippets</b> – Categorized terminal commands at the click of a button.<br/><br/>
         <ul>
-            <li>Manage snippets and categories under <b>File → Settings → Tools → Terminal Snippets</b></li>
+            <li>Manage snippets and categories under <b>File → Settings → Tools → Terminal Command Snippets</b></li>
             <li>Dropdown button directly in the terminal toolbar</li>
             <li>Keyboard shortcut: <b>Alt+Shift+S</b></li>
         </ul>
@@ -26,10 +26,10 @@
             parentId="tools"
             instance="com.terminalsnippets.settings.TerminalSnippetsConfigurable"
             id="com.terminalsnippets.settings.TerminalSnippetsConfigurable"
-            displayName="Terminal Snippets"/>
+            displayName="Terminal Command Snippets"/>
 
-        <!-- Notification-Gruppe für Feedback-Balloons -->
-        <notificationGroup id="Terminal Snippets"
+        <!-- Notification group for feedback balloons -->
+        <notificationGroup id="Terminal Command Snippets"
             displayType="BALLOON"
             isLogByDefault="true"/>
 
@@ -38,27 +38,27 @@
     <actions>
 
         <!--
-            Dropdown-Button in der Terminal-Toolbar.
-            popup="true" → erzeugt einen nativen IntelliJ-Dropdown-Button.
-            TerminalToolwindowActionGroup ist die korrekte Group-ID in PhpStorm 2025.x
+            Dropdown button in the terminal toolbar.
+            popup="true" creates a native IntelliJ dropdown button.
+            TerminalToolwindowActionGroup is the correct group ID in PhpStorm 2025.x
         -->
         <group
             id="com.terminalsnippets.actions.SnippetActionGroup"
             class="com.terminalsnippets.actions.SnippetActionGroup"
-            text="Terminal Snippets"
-            description="Select and insert a terminal snippet"
+            text="Terminal Command Snippets"
+            description="Select and insert a terminal command snippet"
             icon="AllIcons.Actions.ListChanges"
             popup="true">
 
             <add-to-group group-id="TerminalToolwindowActionGroup" anchor="last"/>
         </group>
 
-        <!-- Keyboard-Shortcut: separate Action, die das Popup öffnet -->
+        <!-- Keyboard shortcut: separate action that opens the popup -->
         <action
             id="com.terminalsnippets.actions.OpenSnippetsPopupAction"
             class="com.terminalsnippets.actions.OpenSnippetsPopupAction"
-            text="Open Terminal Snippets Popup"
-            description="Opens the Terminal Snippets menu">
+            text="Open Terminal Command Snippets Popup"
+            description="Opens the Terminal Command Snippets menu">
             <keyboard-shortcut keymap="$default" first-keystroke="alt shift S"/>
         </action>
 

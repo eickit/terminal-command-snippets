@@ -104,7 +104,7 @@ object TerminalHelper {
     private fun notify(project: Project, message: String, type: NotificationType) {
         try {
             NotificationGroupManager.getInstance()
-                .getNotificationGroup("Terminal Snippets")
+                .getNotificationGroup("Terminal Command Snippets")
                 .createNotification(message, type)
                 .notify(project)
         } catch (_: Exception) {

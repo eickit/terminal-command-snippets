@@ -1,1 +1,1 @@
-rootProject.name = "terminal-snippets"
+rootProject.name = "terminal-command-snippets"

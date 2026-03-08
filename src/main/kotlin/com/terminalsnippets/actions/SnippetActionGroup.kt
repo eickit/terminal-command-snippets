@@ -77,7 +77,7 @@ class SnippetActionGroup : ActionGroup(), DumbAware {
 
     /** Last entry in the menu – opens the settings. */
     private class OpenSnippetsManagerAction :
-        AnAction("Manage Snippets…", "Open Terminal Snippets settings", AllIcons.General.Settings) {
+        AnAction("Manage Snippets…", "Open Terminal Command Snippets settings", AllIcons.General.Settings) {
         override fun actionPerformed(e: AnActionEvent) {
             val project = e.project ?: return
             ShowSettingsUtil.getInstance()

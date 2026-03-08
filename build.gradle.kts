@@ -14,12 +14,12 @@ repositories {
 }
 
 dependencies {
-    // Gson für JSON-Import/Export (wird ins Plugin gebündelt)
+    // Gson for JSON import/export (bundled into the plugin)
     implementation("com.google.code.gson:gson:2.11.0")
 }
 
 intellij {
-    // PhpStorm 2023.3 als Build-Basis; kompatibel mit 2023.3 – 2025.x
+    // PhpStorm 2023.3 as build base; compatible with 2023.3 – 2025.x
     version.set("2023.3.4")
     type.set("PS")
     plugins.set(listOf("terminal"))
@@ -37,7 +37,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("233")
-        // Kein untilBuild gesetzt → keine Obergrenze → kompatibel mit allen zukünftigen Versionen
+        // No untilBuild set → no upper limit → compatible with all future versions
         untilBuild.set("")
     }
 }
