@@ -12,6 +12,9 @@ out/
 .gradle/
 build/
 
+# Local secrets – never commit
+gradle.properties
+
 # Kotlin/JVM
 *.class
 *.jar

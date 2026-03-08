@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.terminalsnippets"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -39,5 +39,9 @@ tasks {
         sinceBuild.set("233")
         // No untilBuild set → no upper limit → compatible with all future versions
         untilBuild.set("")
+    }
+
+    publishPlugin {
+        token.set(providers.gradleProperty("intellijPublishToken"))
     }
 }
