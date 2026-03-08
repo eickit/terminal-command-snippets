@@ -234,7 +234,7 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
     // ─── Import / Export ─────────────────────────────────────────────────────
 
     private fun doExport() {
-        ImportExportService.exportToFile(mainPanel, getCategories(), project)
+        ImportExportService.exportToFile(mainPanel, getCategories())
     }
 
     private fun doImport() {

@@ -4,17 +4,20 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonSyntaxException
 import com.intellij.openapi.fileChooser.FileChooser
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
-import com.intellij.openapi.fileChooser.FileChooserFactory
-import com.intellij.openapi.fileChooser.FileSaverDescriptor
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.vfs.VirtualFile
 import com.terminalsnippets.model.SnippetCategory
 import com.terminalsnippets.model.TerminalSnippet
 import java.awt.Component
+import java.awt.FileDialog
+import java.awt.Frame
+import javax.swing.SwingUtilities
 import javax.swing.JOptionPane
 
 /**
- * Handles JSON-based import and export using IntelliJ's native file dialogs.
+ * Handles JSON-based import and export.
+ *
+ * Export: uses java.awt.FileDialog (native OS save dialog, no deprecated IntelliJ API)
+ * Import: uses IntelliJ's FileChooser (VirtualFile required for reading)
  *
  * JSON format:
  * {
@@ -55,17 +58,21 @@ object ImportExportService {
     // ─── Export ──────────────────────────────────────────────────────────────
 
     /**
-     * Opens the native save dialog and exports all categories as JSON.
+     * Opens the native OS save dialog (java.awt.FileDialog) and exports all categories as JSON.
+     * Avoids deprecated IntelliJ FileSaverDescriptor API entirely.
      */
-    fun exportToFile(parent: Component, categories: List<SnippetCategory>, project: Project? = null) {
-        val descriptor = FileSaverDescriptor(
-            "Export Snippets",
-            "Save all categories and snippets as JSON (*.json)"
-        )
+    fun exportToFile(parent: Component, categories: List<SnippetCategory>) {
+        val parentFrame = SwingUtilities.getWindowAncestor(parent) as? Frame
 
-        val dialog = FileChooserFactory.getInstance().createSaveFileDialog(descriptor, project)
-        // Explicit cast to VirtualFile? resolves ambiguity with Path?
-        val fileWrapper = dialog.save(null as VirtualFile?, "terminal-snippets-backup") ?: return
+        val fileDialog = FileDialog(parentFrame, "Export Snippets", FileDialog.SAVE).apply {
+            file = "terminal-snippets-backup.json"
+            isVisible = true
+        }
+
+        val dir      = fileDialog.directory ?: return
+        val filename = fileDialog.file       ?: return
+
+        val outputFile = java.io.File(dir, if (filename.endsWith(".json", ignoreCase = true)) filename else "$filename.json")
 
         try {
             val backup = JsonBackup(
@@ -78,14 +85,6 @@ object ImportExportService {
                     )
                 }
             )
-
-            // Ensure .json extension (IntelliJ sometimes omits it)
-            val rawFile = fileWrapper.file
-            val outputFile = if (rawFile.name.endsWith(".json", ignoreCase = true)) {
-                rawFile
-            } else {
-                java.io.File("${rawFile.absolutePath}.json")
-            }
 
             outputFile.writeText(gson.toJson(backup), Charsets.UTF_8)
 
