@@ -33,7 +33,7 @@ object ImportExportService {
 
     private val gson = GsonBuilder().setPrettyPrinting().create()
 
-    // ─── Datenklassen für JSON ────────────────────────────────────────────────
+    // ─── JSON data classes ────────────────────────────────────────────────────
 
     private data class JsonSnippet(
         val name: String,
@@ -55,17 +55,17 @@ object ImportExportService {
     // ─── Export ──────────────────────────────────────────────────────────────
 
     /**
-     * Öffnet den nativen Speichern-Dialog und exportiert alle Kategorien als JSON.
+     * Opens the native save dialog and exports all categories as JSON.
      */
     fun exportToFile(parent: Component, categories: List<SnippetCategory>, project: Project? = null) {
         val descriptor = FileSaverDescriptor(
-            "Snippets exportieren",
-            "Alle Kategorien und Snippets als JSON speichern",
+            "Export Snippets",
+            "Save all categories and snippets as JSON",
             "json"
         )
 
         val dialog = FileChooserFactory.getInstance().createSaveFileDialog(descriptor, project)
-        // Expliziter Cast auf VirtualFile? löst die Ambiguität mit Path?
+        // Explicit cast to VirtualFile? resolves ambiguity with Path?
         val fileWrapper = dialog.save(null as VirtualFile?, "terminal-snippets-backup") ?: return
 
         try {
@@ -80,7 +80,7 @@ object ImportExportService {
                 }
             )
 
-            // Dateiendung sicherstellen (IntelliJ hängt sie manchmal nicht automatisch an)
+            // Ensure .json extension (IntelliJ sometimes omits it)
             val rawFile = fileWrapper.file
             val outputFile = if (rawFile.name.endsWith(".json", ignoreCase = true)) {
                 rawFile
@@ -92,15 +92,15 @@ object ImportExportService {
 
             JOptionPane.showMessageDialog(
                 parent,
-                "${categories.size} Kategorie(n) exportiert nach:\n${outputFile.name}",
-                "Export erfolgreich",
+                "${categories.size} category/categories exported to:\n${outputFile.name}",
+                "Export Successful",
                 JOptionPane.INFORMATION_MESSAGE
             )
         } catch (ex: Exception) {
             JOptionPane.showMessageDialog(
                 parent,
-                "Fehler beim Exportieren:\n${ex.message}",
-                "Export fehlgeschlagen",
+                "Error during export:\n${ex.message}",
+                "Export Failed",
                 JOptionPane.ERROR_MESSAGE
             )
         }
@@ -109,8 +109,8 @@ object ImportExportService {
     // ─── Import ──────────────────────────────────────────────────────────────
 
     /**
-     * Öffnet den nativen Datei-Dialog, liest die JSON-Datei und gibt die
-     * resultierenden Kategorien zurück. Fragt vorher nach dem Import-Modus.
+     * Opens the native file dialog, reads the JSON file and returns
+     * the resulting categories. Asks for the import mode beforehand.
      */
     fun importFromFile(
         parent: Component,
@@ -126,30 +126,30 @@ object ImportExportService {
             /* chooseJarContents = */ false,
             /* chooseMultiple = */ false
         ).apply {
-            title = "Snippets importieren"
-            description = "JSON-Backup-Datei auswählen"
+            title = "Import Snippets"
+            description = "Select a JSON backup file"
             withFileFilter { it.extension?.equals("json", ignoreCase = true) == true }
         }
 
         val virtualFile = FileChooser.chooseFile(descriptor, project, null) ?: return null
 
-        // JSON parsen
+        // Parse JSON
         val imported = try {
             val json = String(virtualFile.contentsToByteArray(), Charsets.UTF_8)
             parseJson(json)
         } catch (ex: JsonSyntaxException) {
             JOptionPane.showMessageDialog(
                 parent,
-                "Ungültiges JSON-Format:\n${ex.message}",
-                "Import fehlgeschlagen",
+                "Invalid JSON format:\n${ex.message}",
+                "Import Failed",
                 JOptionPane.ERROR_MESSAGE
             )
             return null
         } catch (ex: Exception) {
             JOptionPane.showMessageDialog(
                 parent,
-                "Fehler beim Lesen der Datei:\n${ex.message}",
-                "Import fehlgeschlagen",
+                "Error reading file:\n${ex.message}",
+                "Import Failed",
                 JOptionPane.ERROR_MESSAGE
             )
             return null
@@ -157,12 +157,12 @@ object ImportExportService {
 
         if (imported.isEmpty()) {
             JOptionPane.showMessageDialog(
-                parent, "Die Datei enthält keine Kategorien.", "Import", JOptionPane.INFORMATION_MESSAGE
+                parent, "The file contains no categories.", "Import", JOptionPane.INFORMATION_MESSAGE
             )
             return null
         }
 
-        // Import-Modus abfragen
+        // Ask for import mode
         val mode = askImportMode(parent, imported.size, existingCategories.size) ?: return null
 
         val result = when (mode) {
@@ -172,15 +172,15 @@ object ImportExportService {
 
         JOptionPane.showMessageDialog(
             parent,
-            "${imported.size} Kategorie(n) importiert.",
-            "Import erfolgreich",
+            "${imported.size} category/categories imported.",
+            "Import Successful",
             JOptionPane.INFORMATION_MESSAGE
         )
 
         return result
     }
 
-    // ─── Hilfsfunktionen ─────────────────────────────────────────────────────
+    // ─── Helper functions ─────────────────────────────────────────────────────
 
     private fun parseJson(json: String): List<SnippetCategory> {
         val backup = gson.fromJson(json, JsonBackup::class.java)
@@ -194,9 +194,9 @@ object ImportExportService {
     }
 
     /**
-     * Merge-Strategie:
-     * - Gleicher Kategoriename → fehlende Snippets ergänzen (kein Duplikat per Befehl)
-     * - Neue Kategorie → ans Ende anfügen
+     * Merge strategy:
+     * - Same category name → add missing snippets (no duplicate by command)
+     * - New category → append at the end
      */
     private fun mergeCategories(
         existing: List<SnippetCategory>,
@@ -221,13 +221,13 @@ object ImportExportService {
     private enum class ImportMode { MERGE, REPLACE }
 
     private fun askImportMode(parent: Component, importCount: Int, existingCount: Int): ImportMode? {
-        val options = arrayOf("Zusammenführen (Merge)", "Ersetzen (Replace)", "Abbrechen")
+        val options = arrayOf("Merge", "Replace", "Cancel")
         val result = JOptionPane.showOptionDialog(
             parent,
-            "Die Datei enthält $importCount Kategorie(n).\n" +
-            "Aktuell sind $existingCount Kategorie(n) vorhanden.\n\n" +
-            "Wie soll importiert werden?",
-            "Import-Modus wählen",
+            "The file contains $importCount category/categories.\n" +
+            "Currently $existingCount category/categories exist.\n\n" +
+            "How would you like to import?",
+            "Choose Import Mode",
             JOptionPane.DEFAULT_OPTION,
             JOptionPane.QUESTION_MESSAGE,
             null,

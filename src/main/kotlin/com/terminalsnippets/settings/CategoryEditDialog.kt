@@ -12,14 +12,14 @@ import javax.swing.JPanel
 import javax.swing.JTextField
 
 /**
- * Dialog zum Erstellen und Umbenennen einer Kategorie.
+ * Dialog for creating and renaming a category.
  */
 class CategoryEditDialog(private val initialName: String = "") : DialogWrapper(true) {
 
     private val nameField = JTextField(initialName, 30)
 
     init {
-        title = if (initialName.isEmpty()) "Kategorie hinzufügen" else "Kategorie umbenennen"
+        title = if (initialName.isEmpty()) "Add Category" else "Rename Category"
         init()
     }
 
@@ -49,7 +49,7 @@ class CategoryEditDialog(private val initialName: String = "") : DialogWrapper(t
     }
 
     override fun doValidate(): ValidationInfo? {
-        if (nameField.text.isBlank()) return ValidationInfo("Name darf nicht leer sein.", nameField)
+        if (nameField.text.isBlank()) return ValidationInfo("Name must not be empty.", nameField)
         return null
     }
 

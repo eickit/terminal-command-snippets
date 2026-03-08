@@ -13,13 +13,13 @@ import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
 /**
- * Fügt einen Befehl in das aktive Terminal ein.
+ * Inserts a command into the active terminal.
  *
- * Strategie:
- *  1. Befehl in die AWT-System-Zwischenablage kopieren
- *  2. Terminal-ToolWindow fokussieren
- *  3. Paste-Action auslösen (mehrere Strategien)
- *  4. Notification als Bestätigung
+ * Strategy:
+ *  1. Copy command to the AWT system clipboard
+ *  2. Focus the terminal tool window
+ *  3. Trigger paste action (multiple strategies)
+ *  4. Show notification as confirmation
  */
 object TerminalHelper {
 
@@ -31,37 +31,37 @@ object TerminalHelper {
             val clipboard = Toolkit.getDefaultToolkit().systemClipboard
             clipboard.setContents(StringSelection(command), null)
         } catch (ex: Exception) {
-            notify(project, "Fehler beim Kopieren: ${ex.message}", NotificationType.ERROR)
+            notify(project, "Error copying to clipboard: ${ex.message}", NotificationType.ERROR)
             return
         }
 
-        // 2. Terminal aktivieren + fokussieren
+        // 2. Activate and focus the terminal
         val toolWindow = ToolWindowManager.getInstance(project).getToolWindow("Terminal")
         if (toolWindow == null) {
-            notify(project, "In Zwischenablage kopiert (kein Terminal gefunden). Einfügen mit ⌘V.", NotificationType.INFORMATION)
+            notify(project, "Copied to clipboard (no terminal found). Paste with ⌘V.", NotificationType.INFORMATION)
             return
         }
 
         toolWindow.activate({
-            // 3. Paste im nächsten EDT-Zyklus (damit der Fokus auf dem Terminal liegt)
+            // 3. Paste on the next EDT cycle (so the terminal has focus)
             ApplicationManager.getApplication().invokeLater({
                 val pasted = tryPaste()
                 if (!pasted) {
-                    notify(project, "In Zwischenablage kopiert. Einfügen mit ⌘V / Ctrl+V.", NotificationType.INFORMATION)
+                    notify(project, "Copied to clipboard. Paste with ⌘V / Ctrl+V.", NotificationType.INFORMATION)
                 }
             }, ModalityState.nonModal())
         }, true)
     }
 
     /**
-     * Versucht, Paste in der aktuell fokussierten Komponente auszulösen.
-     * Probiert mehrere Strategien der Reihe nach.
+     * Attempts to trigger paste in the currently focused component.
+     * Tries multiple strategies in sequence.
      */
     private fun tryPaste(): Boolean {
         val focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner
             ?: return false
 
-        // Strategie 1: IntelliJ ACTION_PASTE
+        // Strategy 1: IntelliJ ACTION_PASTE
         try {
             val pasteAction = ActionManager.getInstance().getAction(IdeActions.ACTION_PASTE)
             if (pasteAction != null) {
@@ -72,7 +72,7 @@ object TerminalHelper {
             }
         } catch (_: Exception) { }
 
-        // Strategie 2: $Paste Action (Editor-spezifisch)
+        // Strategy 2: $Paste action (editor-specific)
         try {
             val editorPaste = ActionManager.getInstance().getAction("\$Paste")
             if (editorPaste != null) {
@@ -83,7 +83,7 @@ object TerminalHelper {
             }
         } catch (_: Exception) { }
 
-        // Strategie 3: Direkt TransferHandler.importData aufrufen (Swing-Paste)
+        // Strategy 3: Call TransferHandler.importData directly (Swing paste)
         try {
             if (focusOwner is javax.swing.JComponent) {
                 val transferHandler = focusOwner.transferHandler
@@ -108,7 +108,7 @@ object TerminalHelper {
                 .createNotification(message, type)
                 .notify(project)
         } catch (_: Exception) {
-            // Notification-Gruppe nicht verfügbar – ignorieren
+            // Notification group not available – ignore
         }
     }
 }

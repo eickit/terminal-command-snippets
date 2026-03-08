@@ -5,13 +5,13 @@
     <vendor>Sven-Holger Eick</vendor>
 
     <description><![CDATA[
-        <b>Terminal Snippets</b> – Kategorisierte Terminalbefehle auf Knopfdruck.<br/><br/>
+        <b>Terminal Snippets</b> – Categorized terminal commands at the click of a button.<br/><br/>
         <ul>
-            <li>Snippets und Kategorien verwalten unter <b>File → Settings → Tools → Terminal Snippets</b></li>
-            <li>Dropdown-Button direkt in der Terminal-Toolbar</li>
-            <li>Keyboard-Shortcut: <b>Alt+Shift+S</b></li>
+            <li>Manage snippets and categories under <b>File → Settings → Tools → Terminal Snippets</b></li>
+            <li>Dropdown button directly in the terminal toolbar</li>
+            <li>Keyboard shortcut: <b>Alt+Shift+S</b></li>
         </ul>
-        Vordefinierte Kategorien: Symfony, Composer, WP-CLI, Git.
+        Pre-defined categories: Symfony, Composer, WP-CLI, Git.
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
@@ -46,7 +46,7 @@
             id="com.terminalsnippets.actions.SnippetActionGroup"
             class="com.terminalsnippets.actions.SnippetActionGroup"
             text="Terminal Snippets"
-            description="Terminal-Snippet auswählen und einfügen"
+            description="Select and insert a terminal snippet"
             icon="AllIcons.Actions.ListChanges"
             popup="true">
 
@@ -57,8 +57,8 @@
         <action
             id="com.terminalsnippets.actions.OpenSnippetsPopupAction"
             class="com.terminalsnippets.actions.OpenSnippetsPopupAction"
-            text="Terminal Snippets Popup öffnen"
-            description="Öffnet das Terminal-Snippets-Menü">
+            text="Open Terminal Snippets Popup"
+            description="Opens the Terminal Snippets menu">
             <keyboard-shortcut keymap="$default" first-keystroke="alt shift S"/>
         </action>
 

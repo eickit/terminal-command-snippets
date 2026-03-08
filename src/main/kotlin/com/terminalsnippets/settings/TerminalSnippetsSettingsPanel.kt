@@ -45,7 +45,7 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
 
         // AnAction statt AnActionButton verwenden (addExtraAction(AnActionButton) ist deprecated)
         val renameAction = object : com.intellij.openapi.actionSystem.AnAction(
-            "Umbenennen", "Kategorie umbenennen", AllIcons.Actions.Edit
+            "Rename", "Rename category", AllIcons.Actions.Edit
         ) {
             override fun actionPerformed(e: com.intellij.openapi.actionSystem.AnActionEvent) = renameCategory()
         }
@@ -59,7 +59,7 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
         categoryDecorator.preferredSize = Dimension(200, 0)
 
         val leftPanel = JPanel(BorderLayout(0, 4))
-        leftPanel.add(JLabel("Kategorien"), BorderLayout.NORTH)
+        leftPanel.add(JLabel("Categories"), BorderLayout.NORTH)
         leftPanel.add(categoryDecorator, BorderLayout.CENTER)
 
         // ── Snippet-Tabelle (rechts) ─────────────────────────────────────────
@@ -81,18 +81,18 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
             .createPanel()
 
         val rightPanel = JPanel(BorderLayout(0, 4))
-        rightPanel.add(JLabel("Snippets"), BorderLayout.NORTH)
+        rightPanel.add(JLabel("Snippets"), BorderLayout.NORTH)  // "Snippets" is the same in English
         rightPanel.add(snippetDecorator, BorderLayout.CENTER)
 
         mainPanel.add(leftPanel, BorderLayout.WEST)
         mainPanel.add(rightPanel, BorderLayout.CENTER)
 
         // ── Import / Export (unten) ──────────────────────────────────────────
-        val importBtn = JButton("Importieren…").apply {
+        val importBtn = JButton("Import…").apply {
             icon = AllIcons.Actions.Upload
             addActionListener { doImport() }
         }
-        val exportBtn = JButton("Exportieren…").apply {
+        val exportBtn = JButton("Export…").apply {
             icon = AllIcons.Actions.Download
             addActionListener { doExport() }
         }
@@ -134,8 +134,8 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
         val name = categoryListModel.getElementAt(idx).name
         val confirm = JOptionPane.showConfirmDialog(
             mainPanel,
-            "Kategorie \"$name\" und alle darin enthaltenen Snippets löschen?",
-            "Kategorie löschen",
+            "Delete category \"$name\" and all its snippets?",
+            "Delete Category",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.WARNING_MESSAGE
         )
@@ -163,8 +163,8 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
         val cat = currentCategory ?: run {
             JOptionPane.showMessageDialog(
                 mainPanel,
-                "Bitte wähle zuerst eine Kategorie aus.",
-                "Keine Kategorie gewählt",
+                "Please select a category first.",
+                "No Category Selected",
                 JOptionPane.INFORMATION_MESSAGE
             )
             return
@@ -246,8 +246,8 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
 
     /** Table-Model für die Snippets der aktuell gewählten Kategorie. */
     inner class SnippetTableModel : AbstractTableModel() {
-        // Spalte 0 = "★" (Hervorhebung), 1 = Name, 2 = Befehl, 3 = Beschreibung
-        private val columns = arrayOf("★", "Name", "Befehl", "Beschreibung")
+        // Column 0 = "★" (highlight), 1 = Name, 2 = Command, 3 = Description
+        private val columns = arrayOf("★", "Name", "Command", "Description")
         private var category: SnippetCategory? = null
 
         fun setCategory(cat: SnippetCategory?) {
@@ -273,7 +273,7 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
         }
     }
 
-    /** Renderer für die ★-Spalte: zeigt "★" wenn highlighted, sonst leer. */
+    /** Renderer for the ★ column: shows "★" when highlighted, otherwise empty. */
     private inner class StarColumnRenderer : javax.swing.table.DefaultTableCellRenderer() {
         init {
             horizontalAlignment = SwingConstants.CENTER
@@ -285,12 +285,12 @@ class TerminalSnippetsSettingsPanel(private val project: com.intellij.openapi.pr
             super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
             val highlighted = value as? Boolean ?: false
             text = if (highlighted) "★" else ""
-            toolTipText = if (highlighted) "Im Menü fett hervorheben" else null
+            toolTipText = if (highlighted) "Highlighted in menu (bold)" else null
             return this
         }
     }
 
-    /** Renderer für die Kategorie-Liste: zeigt Icon + Name + Snippet-Anzahl. */
+    /** Renderer for the category list: shows icon + name + snippet count. */
     private inner class CategoryCellRenderer : DefaultListCellRenderer() {
         override fun getListCellRendererComponent(
             list: JList<*>?, value: Any?, index: Int, isSelected: Boolean, cellHasFocus: Boolean

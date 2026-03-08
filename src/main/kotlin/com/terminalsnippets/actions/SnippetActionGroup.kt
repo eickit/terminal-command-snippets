@@ -12,10 +12,10 @@ import com.terminalsnippets.settings.TerminalSnippetsConfigurable
 import com.terminalsnippets.settings.TerminalSnippetsState
 
 /**
- * Haupt-ActionGroup für die Terminal-Toolbar.
+ * Main ActionGroup for the terminal toolbar.
  *
- * Wird als Dropdown-Button (popup="true") in TerminalToolwindowActionGroup eingehängt.
- * getChildren() baut das Menü dynamisch aus dem aktuellen State auf:
+ * Attached as a dropdown button (popup="true") to TerminalToolwindowActionGroup.
+ * getChildren() builds the menu dynamically from the current state:
  *
  *   ▸ Symfony          ← DefaultActionGroup (popup=true)
  *       Cache Clear
@@ -24,7 +24,7 @@ import com.terminalsnippets.settings.TerminalSnippetsState
  *   ▸ Composer
  *       …
  *   ─────────────────
- *   ⚙ Snippets verwalten…
+ *   ⚙ Manage Snippets…
  */
 class SnippetActionGroup : ActionGroup(), DumbAware {
 
@@ -60,11 +60,11 @@ class SnippetActionGroup : ActionGroup(), DumbAware {
         e.presentation.isEnabledAndVisible = true
     }
 
-    // ─── Innere Hilfs-Actions ─────────────────────────────────────────────────
+    // ─── Inner helper actions ─────────────────────────────────────────────────
 
-    /** Wird angezeigt, wenn noch keine Snippets vorhanden sind. */
+    /** Shown when no snippets have been configured yet. */
     private class NoSnippetsAction :
-        AnAction("Keine Snippets konfiguriert", "Snippets in den Einstellungen anlegen", null) {
+        AnAction("No snippets configured", "Add snippets in the settings", null) {
         override fun actionPerformed(e: AnActionEvent) {
             val project = e.project ?: return
             ShowSettingsUtil.getInstance()
@@ -75,9 +75,9 @@ class SnippetActionGroup : ActionGroup(), DumbAware {
         }
     }
 
-    /** Letzter Eintrag im Menü – öffnet die Einstellungen. */
+    /** Last entry in the menu – opens the settings. */
     private class OpenSnippetsManagerAction :
-        AnAction("Snippets verwalten…", "Terminal Snippets Einstellungen öffnen", AllIcons.General.Settings) {
+        AnAction("Manage Snippets…", "Open Terminal Snippets settings", AllIcons.General.Settings) {
         override fun actionPerformed(e: AnActionEvent) {
             val project = e.project ?: return
             ShowSettingsUtil.getInstance()

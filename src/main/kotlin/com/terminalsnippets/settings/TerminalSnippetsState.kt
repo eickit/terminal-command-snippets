@@ -10,8 +10,8 @@ import com.terminalsnippets.model.SnippetCategory
 import com.terminalsnippets.model.TerminalSnippet
 
 /**
- * Speichert alle Kategorien und Snippets dauerhaft in terminalSnippets.xml
- * im IDE-Konfigurationsverzeichnis.
+ * Persists all categories and snippets in terminalSnippets.xml
+ * inside the IDE configuration directory.
  */
 @State(
     name = "TerminalSnippetsState",
@@ -21,20 +21,20 @@ import com.terminalsnippets.model.TerminalSnippet
 class TerminalSnippetsState : PersistentStateComponent<TerminalSnippetsState> {
 
     var categories: MutableList<SnippetCategory> = mutableListOf(
-        // Symfony – Standard-Snippets
+        // Symfony – default snippets
         SnippetCategory("Symfony").apply {
             snippets.addAll(
                 listOf(
-                    TerminalSnippet("Console", "php bin/console", "Symfony Console aufrufen"),
-                    TerminalSnippet("Cache Clear", "php bin/console cache:clear", "Cache leeren"),
-                    TerminalSnippet("Cache Warmup", "php bin/console cache:warmup", "Cache aufwärmen"),
-                    TerminalSnippet("Make Controller", "php bin/console make:controller", "Controller erstellen"),
-                    TerminalSnippet("Make Entity", "php bin/console make:entity", "Entity erstellen"),
-                    TerminalSnippet("Make Migration", "php bin/console make:migration", "Migration erstellen"),
-                    TerminalSnippet("Migrate", "php bin/console doctrine:migrations:migrate", "Migrationen ausführen"),
-                    TerminalSnippet("Routes List", "php bin/console debug:router", "Alle Routen anzeigen"),
-                    TerminalSnippet("Server Start", "symfony server:start", "Dev-Server starten"),
-                    TerminalSnippet("Server Stop", "symfony server:stop", "Dev-Server stoppen")
+                    TerminalSnippet("Console", "php bin/console", "Open Symfony Console"),
+                    TerminalSnippet("Cache Clear", "php bin/console cache:clear", "Clear the cache"),
+                    TerminalSnippet("Cache Warmup", "php bin/console cache:warmup", "Warm up the cache"),
+                    TerminalSnippet("Make Controller", "php bin/console make:controller", "Create a controller"),
+                    TerminalSnippet("Make Entity", "php bin/console make:entity", "Create an entity"),
+                    TerminalSnippet("Make Migration", "php bin/console make:migration", "Create a migration"),
+                    TerminalSnippet("Migrate", "php bin/console doctrine:migrations:migrate", "Run migrations"),
+                    TerminalSnippet("Routes List", "php bin/console debug:router", "List all routes"),
+                    TerminalSnippet("Server Start", "symfony server:start", "Start the dev server"),
+                    TerminalSnippet("Server Stop", "symfony server:stop", "Stop the dev server")
                 )
             )
         },
@@ -43,12 +43,12 @@ class TerminalSnippetsState : PersistentStateComponent<TerminalSnippetsState> {
         SnippetCategory("Composer").apply {
             snippets.addAll(
                 listOf(
-                    TerminalSnippet("Install", "composer install", "Dependencies installieren"),
-                    TerminalSnippet("Update", "composer update", "Dependencies aktualisieren"),
-                    TerminalSnippet("Require", "composer require ", "Paket hinzufügen (Name ergänzen)"),
-                    TerminalSnippet("Remove", "composer remove ", "Paket entfernen (Name ergänzen)"),
-                    TerminalSnippet("Dump Autoload", "composer dump-autoload", "Autoloader neu generieren"),
-                    TerminalSnippet("Outdated", "composer outdated", "Veraltete Pakete anzeigen")
+                    TerminalSnippet("Install", "composer install", "Install dependencies"),
+                    TerminalSnippet("Update", "composer update", "Update dependencies"),
+                    TerminalSnippet("Require", "composer require ", "Add a package (append name)"),
+                    TerminalSnippet("Remove", "composer remove ", "Remove a package (append name)"),
+                    TerminalSnippet("Dump Autoload", "composer dump-autoload", "Regenerate the autoloader"),
+                    TerminalSnippet("Outdated", "composer outdated", "List outdated packages")
                 )
             )
         },
@@ -57,16 +57,16 @@ class TerminalSnippetsState : PersistentStateComponent<TerminalSnippetsState> {
         SnippetCategory("WP CLI").apply {
             snippets.addAll(
                 listOf(
-                    TerminalSnippet("Plugin List", "wp plugin list", "Alle Plugins auflisten"),
-                    TerminalSnippet("Plugin Update All", "wp plugin update --all", "Alle Plugins aktualisieren"),
-                    TerminalSnippet("Theme List", "wp theme list", "Alle Themes auflisten"),
-                    TerminalSnippet("Core Update", "wp core update", "WordPress aktualisieren"),
-                    TerminalSnippet("Cache Flush", "wp cache flush", "WordPress-Cache leeren"),
-                    TerminalSnippet("DB Export", "wp db export backup.sql", "Datenbank exportieren"),
-                    TerminalSnippet("DB Import", "wp db import backup.sql", "Datenbank importieren"),
-                    TerminalSnippet("Search Replace", "wp search-replace 'alt' 'neu'", "Suchen & Ersetzen in DB"),
-                    TerminalSnippet("User List", "wp user list", "Benutzer auflisten"),
-                    TerminalSnippet("Cron Event List", "wp cron event list", "Cron-Jobs anzeigen")
+                    TerminalSnippet("Plugin List", "wp plugin list", "List all plugins"),
+                    TerminalSnippet("Plugin Update All", "wp plugin update --all", "Update all plugins"),
+                    TerminalSnippet("Theme List", "wp theme list", "List all themes"),
+                    TerminalSnippet("Core Update", "wp core update", "Update WordPress core"),
+                    TerminalSnippet("Cache Flush", "wp cache flush", "Flush the WordPress cache"),
+                    TerminalSnippet("DB Export", "wp db export backup.sql", "Export the database"),
+                    TerminalSnippet("DB Import", "wp db import backup.sql", "Import the database"),
+                    TerminalSnippet("Search Replace", "wp search-replace 'old' 'new'", "Search & replace in DB"),
+                    TerminalSnippet("User List", "wp user list", "List all users"),
+                    TerminalSnippet("Cron Event List", "wp cron event list", "List cron jobs")
                 )
             )
         },
@@ -75,12 +75,12 @@ class TerminalSnippetsState : PersistentStateComponent<TerminalSnippetsState> {
         SnippetCategory("Git").apply {
             snippets.addAll(
                 listOf(
-                    TerminalSnippet("Status", "git status", "Repository-Status anzeigen"),
-                    TerminalSnippet("Pull", "git pull", "Änderungen pullen"),
-                    TerminalSnippet("Add All", "git add -A", "Alle Änderungen stagen"),
-                    TerminalSnippet("Commit", "git commit -m \"\"", "Commit erstellen (Message ergänzen)"),
-                    TerminalSnippet("Push", "git push", "Änderungen pushen"),
-                    TerminalSnippet("Log", "git log --oneline -20", "Letzten 20 Commits anzeigen")
+                    TerminalSnippet("Status", "git status", "Show repository status"),
+                    TerminalSnippet("Pull", "git pull", "Pull latest changes"),
+                    TerminalSnippet("Add All", "git add -A", "Stage all changes"),
+                    TerminalSnippet("Commit", "git commit -m \"\"", "Create a commit (add message)"),
+                    TerminalSnippet("Push", "git push", "Push changes"),
+                    TerminalSnippet("Log", "git log --oneline -20", "Show last 20 commits")
                 )
             )
         }

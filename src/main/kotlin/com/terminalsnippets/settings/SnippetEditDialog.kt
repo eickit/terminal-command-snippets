@@ -14,7 +14,7 @@ import javax.swing.JPanel
 import javax.swing.JTextField
 
 /**
- * Dialog zum Erstellen und Bearbeiten eines Terminal-Snippets.
+ * Dialog for creating and editing a terminal snippet.
  */
 class SnippetEditDialog(
     private val snippet: TerminalSnippet,
@@ -24,10 +24,10 @@ class SnippetEditDialog(
     private val nameField        = JTextField(snippet.name, 35)
     private val commandField     = JTextField(snippet.command, 35)
     private val descriptionField = JTextField(snippet.description, 35)
-    private val highlightedBox   = JCheckBox("Im Menü fett hervorheben", snippet.highlighted)
+    private val highlightedBox   = JCheckBox("Highlight in menu (bold)", snippet.highlighted)
 
     init {
-        title = if (isNew) "Snippet hinzufügen" else "Snippet bearbeiten"
+        title = if (isNew) "Add Snippet" else "Edit Snippet"
         init()
     }
 
@@ -53,17 +53,17 @@ class SnippetEditDialog(
         panel.add(JLabel("Name:"), lc)
         panel.add(nameField, fc)
 
-        // Befehl
+        // Command
         lc.gridy = 1; fc.gridy = 1
-        panel.add(JLabel("Befehl:"), lc)
+        panel.add(JLabel("Command:"), lc)
         panel.add(commandField, fc)
 
-        // Beschreibung (optional)
+        // Description (optional)
         lc.gridy = 2; fc.gridy = 2
-        panel.add(JLabel("Beschreibung:"), lc)
+        panel.add(JLabel("Description:"), lc)
         panel.add(descriptionField, fc)
 
-        // Hervorhebung – Checkbox überspannt beide Spalten
+        // Highlight – checkbox spans both columns
         val checkConstraints = GridBagConstraints().apply {
             gridx = 0
             gridy = 3
@@ -77,12 +77,12 @@ class SnippetEditDialog(
     }
 
     override fun doValidate(): ValidationInfo? {
-        if (nameField.text.isBlank())    return ValidationInfo("Name darf nicht leer sein.", nameField)
-        if (commandField.text.isBlank()) return ValidationInfo("Befehl darf nicht leer sein.", commandField)
+        if (nameField.text.isBlank())    return ValidationInfo("Name must not be empty.", nameField)
+        if (commandField.text.isBlank()) return ValidationInfo("Command must not be empty.", commandField)
         return null
     }
 
-    /** Übernimmt die Eingaben in das übergebene Snippet-Objekt. */
+    /** Applies the entered values to the given snippet object. */
     fun applyToSnippet(): TerminalSnippet {
         snippet.name        = nameField.text.trim()
         snippet.command     = commandField.text.trim()
